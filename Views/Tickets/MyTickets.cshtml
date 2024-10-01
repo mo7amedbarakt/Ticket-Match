@@ -1,0 +1,43 @@
+﻿
+@model List<Ticket>
+<div class="all-background p-2">
+    <div class="container">
+    <h1>My Tickets</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">TimeOfMatch</th>
+            <th scope="col">State</th>
+            <th scope="col">Price</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.Title</td>
+                <td>@ticket.Description</td>
+                <td>@ticket.TimeOfMatch</td>
+                @if (ticket.State == State.Available)
+                {
+                    <td>Available</td>
+                }
+                else
+                {
+                    <td>Unavailable</td>
+                }
+                <td>@ticket.Price</td>
+                <th scope="row">
+                    <a class="btn btn-danger" href="/Tickets/DeleteMyTicket/@ticket.TicketId">Delete</a>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+    </div>
+
+</div>

@@ -1,0 +1,102 @@
+﻿@model List<Ticket>
+<div class="all-background p-2">
+<div class="container mt-2">
+<h1>All Tickets</h1>
+@if (User.IsInRole("Responsible"))
+{
+    <a class="btn btn-primary" asp-action="Create" asp-controller="Tickets">Create New Ticket</a>
+}
+@if (User.IsInRole("User"))
+{
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <a class="btn btn-primary" asp-action="MyTickets" asp-controller="Tickets">My Tickets</a>
+}
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">TimeOfMatch</th>
+            <th scope="col">State</th>
+            <th scope="col">Price</th>
+            @if (User.IsInRole("Responsible"))
+            {
+                <th scope="col" >Delete</th>
+                <th scope="col">Option</th>
+            }
+            @if (User.IsInRole("User"))
+            {
+                <th scope="col">Book Ticket</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.Title</td>
+                <td>@ticket.Description</td>
+                <td>@ticket.TimeOfMatch</td>
+                @if (ticket.State == State.Available)
+                {
+                    <td>Available</td>
+                }
+                else
+                {
+                    <td>Unavailable</td>
+                }
+                <td>@ticket.Price</td>
+                @if (User.IsInRole("Responsible"))
+                {
+                        <th scope="row">
+                            <a class="btn btn-danger" href="/Tickets/Delete/@ticket.TicketId">Delete</a>
+                        </th>
+                    @if (ticket.State == State.Available)
+                    {
+                        <td>
+                                <a class="btn btn-info" asp-controller="Tickets" asp-action="Unavailable" asp-route-id="@ticket.TicketId">Unavailable</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                                <a class="btn btn-dark">Unavailable</a>
+                        </td>
+                    }
+                }
+                @if (User.IsInRole("User")&&ticket.State==State.Available)
+                {
+                    
+                    <td>
+                        <form asp-controller="Tickets" asp-action="BookTicket">
+                            <input type="hidden" name="TicketId" value="@ticket.TicketId" />
+                            <button type="submit" class="btn btn-primary">Book Ticket</button>
+                        </form>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                            <input type="hidden" name="TicketId" value="@ticket.TicketId" />
+                        @if (User.IsInRole("User"))
+                        {
+                            <button type="submit" class="btn btn-dark">Book Ticket</button>
+                        }                            
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+</div>
+

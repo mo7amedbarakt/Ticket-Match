@@ -1,0 +1,27 @@
+﻿
+@model LoginRequest
+<header>
+    <link href="~/css/login.css" rel="stylesheet" />
+</header>
+<body class="login_section">
+    <div class="wrapper">
+        <form method="post" asp-action="LoginUser" asp-controller="Account">
+            <h1 class="text-center">Sign in</h1>
+            <div class="input-group">
+                <input asp-for="Email" type="text" placeholder="email"required>
+            </div>
+            <div class="input-group">
+                <input asp-for="Password" type="Password" placeholder="password" required>
+            </div>
+            <div asp-validation-summary="All" class="text-danger" mb-2>
+            </div>
+            <button type="submit" class="btn">Sign in</button>
+        </form>
+    </div>
+
+</body>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
